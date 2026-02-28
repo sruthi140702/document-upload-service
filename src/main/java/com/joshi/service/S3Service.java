@@ -1,6 +1,7 @@
 package com.joshi.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +11,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class S3Service {
@@ -20,6 +22,7 @@ public class S3Service {
     private final String bucketName ="joshi-learning-bucket-2025";
 
     public String uploadFile(MultipartFile file) throws IOException {
+        log.debug("Starting S3 Upload for file : {}",file.getOriginalFilename());
         String key = "raw/"+file.getOriginalFilename();
 
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
@@ -29,6 +32,7 @@ public class S3Service {
                 .build();
 
         s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
+        log.info("Successfully uploaded file to S3 at path: {}",key);
         return key;
 
     }

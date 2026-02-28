@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: document-upload-service
   datasource:
     url: jdbc:postgresql://localhost:5432/documentdb
     username: joshi
